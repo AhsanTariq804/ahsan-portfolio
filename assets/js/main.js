@@ -57,88 +57,41 @@ tabs.forEach((tab) => {
 });
 
 /*=============== SERVICES ACCORDION ===============*/
-// const serviceButtons = document.querySelectorAll(".services--button");
+        document.addEventListener('DOMContentLoaded', () => {
+            const accordionItems = document.querySelectorAll('.accordion-item');
 
-// serviceButtons.forEach(button => {
-//   const heightInfo = document.querySelector(".service--info");
-//   heightInfo.style.height = heightInfo.scrollHeight + "px";
+            accordionItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const contentWrapper = item.querySelector('.accordion-content-wrapper');
+                    
+                    // Toggle the current item
+                    if (item.classList.contains('active')) {
+                        // 1. CLOSE the accordion smoothly
+                        contentWrapper.style.maxHeight = '0px';
+                        item.classList.remove('active');
+                        return;
+                    } 
+                    
+                    // 2. Close any other open accordion first
+                    accordionItems.forEach(otherItem => {
+                        if (otherItem.classList.contains('active')) {
+                            otherItem.querySelector('.accordion-content-wrapper').style.maxHeight = '0px';
+                            otherItem.classList.remove('active');
+                        }
+                    });
+                        
+                    // 3. OPEN the current accordion
+                    item.classList.add('active');
+                    contentWrapper.style.maxHeight = 'none';
+                    const fullHeight = contentWrapper.scrollHeight;
 
-//   button.addEventListener("click", () => {
-//     const servicesCards = document.querySelectorAll(".service--card"),
-//     currentCard = button.parentNode,
-//     currentInfo = currentCard.querySelector(".service--info"),
-//     isCardOpen = currentCard.classList.contains("services--open");
-
-//     // close all other services info
-//     servicesCards.forEach(card => {
-//       card.classList.replace("services--open", "services--close")
-
-//       const info = card.querySelector(".service--info")
-//             info.style.height = "0"
-//     });
-//     if(!isCardOpen){
-//       currentCard.classList.replace("services--close", "services--open");
-//       currentInfo.style.height = currentInfo.scrollHeight + "px"
-//     }
-//   });
-// });
-
-const serviceButtons = document.querySelectorAll(".services--button");
-
-serviceButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const servicesCards = document.querySelectorAll(".service--card");
-    const currentCard = button.parentNode;
-    const currentInfo = currentCard.querySelector(".service--info");
-    const isCardOpen = currentCard.classList.contains("services--open");
-
-    // Close all cards first
-    servicesCards.forEach((card) => {
-      const info = card.querySelector(".service--info");
-      card.classList.remove("services--open");
-      card.classList.add("services--close");
-      info.style.height = "0px";
-    });
-
-    // Open current card if it was closed
-    if (!isCardOpen) {
-      currentCard.classList.remove("services--close");
-      currentCard.classList.add("services--open");
-      currentInfo.style.height = currentInfo.scrollHeight + "px";
-    }
-  });
-});
-
-
-// // Sare cards close karne ka function
-// function closeAllCards() {
-//   const serviceCards = document.querySelectorAll(".service--card");
-//   serviceCards.forEach((card) => {
-//     const info = card.querySelector(".service--info");
-//     card.classList.remove("service--open");
-//     card.classList.add("service--close");
-//     info.style.height = "0px";
-//   });
-// }
-
-// serviceButtons.forEach((button) => {
-//   button.addEventListener("click", () => {
-//     const currentCard = button.closest(".service--card");
-//     const currentInfo = currentCard.querySelector(".service--info");
-//     const isCardOpen = currentCard.classList.contains("service--open");
-
-//     // Pehle sab close kar do
-//     closeAllCards();
-
-//     // Agar current card pehle se open nahi tha to open karo
-//     if (!isCardOpen) {
-//       currentCard.classList.add("service--open");
-//       currentCard.classList.remove("service--close");
-//       currentInfo.style.height = currentInfo.scrollHeight + "px";
-//     }
-//   });
-// });
-
+                    contentWrapper.style.maxHeight = '0px';
+                    requestAnimationFrame(() => {
+                        contentWrapper.style.maxHeight = fullHeight + 'px';
+                    });
+                });
+            });
+        });
 // Page load pe jo card pehle se open hai uska height set karo
 window.addEventListener("load", () => {
   const openCard = document.querySelector(".service--card .service--open");
